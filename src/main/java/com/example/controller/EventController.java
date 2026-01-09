@@ -16,6 +16,12 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @GetMapping("/")
+public String home() {
+    return "home";
+}
+
+
     @RequestMapping("/save")
     public ModelAndView save(@ModelAttribute Event event) {
         Event  e=eventService.addEvent(event);
