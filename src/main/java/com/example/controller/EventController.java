@@ -19,7 +19,7 @@ public class EventController {
     @RequestMapping("/save")
     public ModelAndView save(@ModelAttribute Event event) {
         Event  e=eventService.addEvent(event);
-        ModelAndView mv = new ModelAndView("addevent.jsp");
+        ModelAndView mv = new ModelAndView("addevent.html");
         if(e!=null){
             mv.addObject("status","Event added successfully");
         }
@@ -35,11 +35,11 @@ public class EventController {
         ModelAndView mv;
         Event event=eventService.getEventById(id);
         if(event.getId()!=0){
-            mv = new ModelAndView("searchevent.jsp");
+            mv = new ModelAndView("searchevent.html");
             mv.addObject("event",event);
         }
         else {
-            mv = new ModelAndView("searcheventresult.jsp");
+            mv = new ModelAndView("searcheventresult.html");
             mv.addObject("status","Error searching event");
         }
         return mv;
@@ -47,7 +47,7 @@ public class EventController {
     @RequestMapping("/findAll")
     public ModelAndView findAll() {
         List<Event> event=eventService.getAllEvents();
-        ModelAndView mv = new ModelAndView("viewevent.jsp");
+        ModelAndView mv = new ModelAndView("viewevent.html");
         mv.addObject("event",event);
         return mv;
     }
