@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Search Result</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdn.create.vista.com/api/media/small/12618788/stock-photo-dancing-in-nightclub');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #00ff57;
+            color: black;
+            font-size: 20px;
+        }
+
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        tr:hover { background-color: #ddd; }
+
+        .message {
+            color: red;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Header Include (If you use header fragment) -->
+<div th:replace="home :: header"></div>
+
+<hr/>
+
+<center>
+
+    <!-- Render table if event exists -->
+    <div th:if="${event != null}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event Name</th>
+                <th>Event Date</th>
+                <th>Venue</th>
+                <th>Capacity</th>
+                <th>Description</th>
+                <th>Contact Info</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${event.id}"></td>
+                <td th:text="${event.eventName}"></td>
+                <td th:text="${event.eventDate}"></td>
+                <td th:text="${event.venue}"></td>
+                <td th:text="${event.capacity}"></td>
+                <td th:text="${event.description}"></td>
+                <td th:text="${event.contactInfo}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Show message if no event exists -->
+    <div class="message" th:if="${event == null}">
+        <h3>No Event found for the given ID.</h3>
+    </div>
+
+</center>
+
+</body>
+</html>
