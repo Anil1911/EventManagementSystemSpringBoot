@@ -4,72 +4,61 @@ import com.example.model.Event;
 import com.example.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
 public class EventController {
+
     @Autowired
     private EventService eventService;
 
     @GetMapping("/")
-public String home() {
-    return "home";
-}
+    public String home() {
+        return "home";
+    }
 
-
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ModelAndView save(@ModelAttribute Event event) {
-        Event  e=eventService.addEvent(event);
-        ModelAndView mv = new ModelAndView("addevent.html");
-        if(e!=null){
-            mv.addObject("status","Event added successfully");
-        }
-        else {
-            mv.addObject("status","Error adding event");
-        }
-
+        Event e = eventService.addEvent(event);
+        ModelAndView mv = new ModelAndView("addevent");
+        mv.addObject("status", e != null ? "Event added successfully" : "Error adding event");
         return mv;
     }
 
-    @RequestMapping("/findById")
+    @PostMapping("/findById")
     public ModelAndView findById(@RequestParam int id) {
+        Event event = eventService.getEventById(id);
         ModelAndView mv;
-        Event event=eventService.getEventById(id);
-        if(event.getId()!=0){
-            mv = new ModelAndView("searchevent.html");
-            mv.addObject("event",event);
-        }
-        else {
-            mv = new ModelAndView("searcheventresult.html");
-            mv.addObject("status","Error searching event");
+        if (event != null && event.getId() != 0) {
+            mv = new ModelAndView("searchevent");
+            mv.addObject("event", event);
+        } else {
+            mv = new ModelAndView("searcheventresult");
+            mv.addObject("status", "No event found");
         }
         return mv;
     }
-    @RequestMapping("/findAll")
+
+    @GetMapping("/findAll")
     public ModelAndView findAll() {
-        List<Event> event=eventService.getAllEvents();
-        ModelAndView mv = new ModelAndView("viewevent.html");
-        mv.addObject("event",event);
+        List<Event> event = eventService.getAllEvents();
+        ModelAndView mv = new ModelAndView("viewevent");
+        mv.addObject("event", event);
         return mv;
     }
-    @RequestMapping("/update")
-    public ModelAndView update(@ModelAttribute Event event) {
-        ModelAndView mv = new ModelAndView("findAll");
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute Event event) {
         eventService.addEvent(event);
-        return mv;
+        return "redirect:/findAll";
     }
 
-    @RequestMapping("/deleteById")
-    public ModelAndView deleteById(@RequestParam int id) {
-
-        ModelAndView mv = new ModelAndView("findAll");
+    @GetMapping("/deleteById")
+    public String deleteById(@RequestParam int id) {
         eventService.deleteEventById(id);
-        return mv;
+        return "redirect:/findAll";
     }
-
 }
